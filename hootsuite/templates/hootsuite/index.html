@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Hootsuite Demo App</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
+        <script src="https://d2l6uygi1pgnys.cloudfront.net/jsapi/2-0/hsp.js"></script>
+        
+        <script src="/static/js/asset/template.js"></script>
+        <!--<script src="/static/js/asset/app.js"></script>-->
+    </head>
+
+    <body>
+      <a href="#" class="addImage" >add image</a>
+      <script>
+      $(document).ready(function() {
+        hsp.init({
+            useTheme: true
+        });
+
+        $('.addImage').click(function(){
+            var url = 'http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg';
+            hsp.composeMessage( 'message text', { shortenLinks: true } );
+            hsp.showImagePreview('http://www.joomlaworks.net/images/demos/galleries/abstract/7.jpg', '');
+            $.ajax({
+                url: '/hootsuite/shaSign',
+                data: {
+                    'timestamp': {{timestamp}},
+                    'url': url,
+                    'user_id': {{user}}
+                },
+                success: function(response){
+                    hsp.attachFileToMessage ({
+                        url: url,
+                        name: 'dopeness',
+                        extension: 'jpg',
+                        timestamp: {{timestamp}},
+                        token: response.token
+                    })
+                },
+                error: function(xhr, type, exception) { 
+                    // if ajax fails display error alert
+                    alert("ajax error response type " + type);
+                }
+            })
+        })
+    });
+
+      </script>
+    </body>
+</html>

@@ -1,0 +1,11 @@
+<html>
+	<body>
+		{%for image in image_info%}
+		<p> <a href='{{image.link}}'><img src='{{image.image_url}}'></a> </br>
+		{{forloop.counter}}.</br>
+		Tags: {{image.tags}}</br>
+		Username: {{image.username}}</br>
+		Location: {{image.location}} </br></p>
+		{%endfor%}
+	</body>
+</html>

@@ -1,0 +1,83 @@
+var File = Backbone.Model.extend({
+    'item_id': '',
+    'is_dir': '',
+    'source': '',
+    'path': '',
+    'name': '',
+    'created_time': '',
+    'type':
+});
+
+var FileCollection = Backbone.Collection.extend({ //file collection != folder
+	model: File,
+    url: '',
+    accessToken: '',
+    jsonpRequired: '',
+    urlBuilder: function(item_id){
+        return '';
+    },
+    sync: function(method, model, options) {
+        var self = this;
+        var params = _.extend({
+            type: 'GET',
+            url: self.url + self.accessToken,
+            processData: false
+        }, options);
+        if(self.jsonpRequired){
+            params = _.extend({
+                dataType: 'jsonp'
+            }, params);
+        }
+
+        return $.ajax(params);
+    },
+
+    parse: function(response) {
+        return response.data;
+    }
+});
+
+var FileView = Backbone.View.extend({
+	tagname: "li",
+    model: File,
+	render:function(){
+		this.$el.html('<li><img src="' + this.model.get("source") + '"/></li>');
+        return this;
+	},
+    events: {
+        "click": "getContents"
+    },
+    getContents: function( event ){
+        if(this.model.get('is_dir')){
+            var fileCollectionInstance = new FileCollection(); //use current filecollectioview
+            fileCollectionInstance.url = this.model.urlBuilder(); //'https://graph.facebook.com/v2.3/' + this.model.get('item_id') + '/photos' + '?' + this.model.get('access_token')
+            fileCollectionInstance.fetch({
+                reset: true,
+                success: _.bind(function(collection, response, options){
+                    var fileCollectionViewInstance = new FileCollectionView({el: $("#green"), model: this});
+                    fileCollectionViewInstance.render();
+                }, fileCollectionInstance)
+            });
+        }else{
+            //select photo for upload
+        }
+    }
+});
+
+var FileCollectionView = Backbone.View.extend({
+    tagname: "li",
+    model: FileCollection,
+    render: function() {
+        this.$el.html();
+        
+        var self = this;
+
+        for(var i = 0; i < this.model.length; ++i) {
+            var fileViewInstance = new FileView({model: this.model.at(i)});
+
+            this.$el.append(fileViewInstance.$el); 
+            fileViewInstance.render();         
+        }
+        return this;
+    }
+});

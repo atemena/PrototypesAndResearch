@@ -1,0 +1,30 @@
+from django.conf.urls import patterns, url
+
+from tumblrSandbox import views, geolocation, uploadWidget
+
+urlpatterns = patterns('',
+    url(r'^$', views.index, name='index'),
+    url(r'^authen/$', views.authen , name='authen'),
+    url(r'^getSessionTumblr/$', views.getSessionTumblr , name='getSessionTumblr'),
+    url(r'^getSessionTwitter/$', views.getSessionTwitter , name='getSessionTwitter'),
+    url(r'^getSessionInstagram/$', views.getSessionInstagram , name='getSessionInstagram'),
+    url(r'^getImagesByTag/$', views.getImagesByTag , name='getImagesByTag'),
+    url(r'^mentionUser/$', views.mentionUser , name='mentionUser'),
+    url(r'^commentIG/$', views.commentIG , name='commentIG'),
+    url(r'^givePermission/$', views.givePermission , name='givePermission'),
+    url(r'^getSnapshot/$', views.getSnapshot , name='getSnapshot'),
+    url(r'^indexNew/$', views.indexNew , name='indexNew'),
+    url(r'^authenNew/$', views.authenNew , name='authenNew'),
+    url(r'^getSessionTwitterNew/$', views.getSessionTwitterNew , name='getSessionTwitterNew'),
+    url(r'^getSessionInstagramNew/$', views.getSessionInstagramNew , name='getSessionInstagramNew'),
+    url(r'^getImagesByTagNew/$', views.getImagesByTagNew , name='getImagesByTagNew'),
+    url(r'^getSnapshotNew/$', views.getSnapshotNew , name='getSnapshotNew'),
+    url(r'^authenAPI/$', views.authenAPI , name='authenAPI'),
+    url(r'^getImagesAPI/$', views.getImagesAPI , name='getImagesAPI'),
+    url(r'^instaLoc/$', geolocation.searchLocations , name='searchLocations'),
+    url(r'^getInstaPics/$', views.getInstaPics , name='getInstaPics'),
+    url(r'^getInstaPicsResults/$', views.getInstaPicsResults , name='getInstaPicsResults'),
+    url(r'^shDemo/$', views.shDemo , name='shDemo'),
+    url(r'^shDemoRedirect/$', uploadWidget.shDemoRedirect , name='shDemoRedirect'),
+    #url(r'', views.createCard),
+)

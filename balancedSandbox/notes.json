@@ -1,0 +1,140 @@
+	Instagram
+	User = 
+		"id": "1574083"
+        "username": "snoopdogg",
+        "full_name": "Snoop Dogg",
+        "profile_picture": "http://distillery.s3.amazonaws.com/profiles/profile_1574083_75sq_1295469061.jpg",
+        "bio": "This is my bio",
+        "website": "http://snoopdogg.com",
+       	"media": 1320, (in "counts")
+        "follows": 420, (in "counts")
+        "followed_by": 3410 (in "counts")
+	Picture = 
+		comments: int(count)
+		caption: string(text)
+		likes: int(count)
+		link: string (could be used to for a reference for media)
+		user:  string (keep track of what media is associated with a user)
+		created: datetime (keep track to find best post time? and whether or not to include in recent posts)
+		images:  string (preview of media for user)
+		X users_in_photo: 
+		filter: string (keep track to see which filters do well?)
+		tags: string (can be used to find other media with same tag?)
+		id: string 
+		X location:
+
+	Video =
+		low resolution:  string
+		standard resolution: string
+		comments:  int
+		caption: string
+		likes: int
+		link: string
+		created_time: datetime
+		images: string
+		type: string
+		filter: string
+		tags: string
+		id: string
+		user: string
+		location: string
+
+	Tumblr
+	posts and post info
+	object.response:
+		blog: string
+		posts: (array of posts) (returns up to _____)
+			(each post is an object the contains:)
+			blog_name	:	citriccomics
+			id	:	3507845453
+			post_url	:	http://citriccomics.tumblr.com/post/3507845453
+			type	:	text
+			date	:	2011-02-25 20:27:00 GMT
+			timestamp	:	1298665620
+			state	:	published
+			format	:	html
+			Xreblog_key	:	b0baQtsl
+				tags		[3]
+			note_count	:	14
+			title	:	Milky Dog
+			body	:
+	(different responses for different post types)
+
+	Blog info
+	title	:	David's Log
+	posts	:	3456
+	name	:	david
+	url	:	http://david.tumblr.com/
+	updated	:	1308953007
+	description	:	<p><strong>Mr. Karp</strong> is tall and skinny, with
+	Xask	:	true
+	Xask_anon	:	false
+	likes	:	12345
+
+
+	Twitter:
+
+	///user object
+	name	:	Ryan Sarver
+	profile_image_url	:	http://a0.twimg.com/profile_images/1777569006/image1327396628_normal.png
+	location	:	San Francisco, CA
+	id_str	:	795649
+	favourites_count	:	3162
+	url	:	null
+	profile_image_url_https	:	https://si0.twimg.com/profile_images/1777569006/image1327396628_normal.png
+	utc_offset	:	-28800
+	id	:	795649
+	listed_count	:	1586
+	followers_count	:	276334
+	time_zone	:	Pacific Time (US & Canada)
+	description	:	Director, Platform at Twitter. Detroit and Boston export. Foodie and over-the-hill hockey player. @devon's lesser half
+	X	status		{21}
+	statuses_count	:	13728
+	friends_count	:	1780
+	screen_name	:	rsarver
+
+
+
+
+	//a tweet object, used to display current users most recent tweets
+	created_at	:	Wed Aug 29 17:12:58 +0000 2012		
+	id_str	:	240859602684612608		
+		entities		{3}		
+	contributors	:	null		
+	text	:	Introducing the Twitter Certified Products Program: https://t.co/MjJ8xAnT		
+	retweet_count	:	121		
+	id	:	240859602684612600			
+	Xplace	:	null		
+		user		{39}	
+	source	:	<a href=
+
+
+	User:
+		name = charfield
+		username = charfield
+		instagram = foreignkey(instagram)
+		tumblr = foreignkey(tumblr)
+		twitter = foreignkey(twitter)
+		facebook = foreignkey(facebook)
+
+	instagram:
+		id = charfield ex: "1574083"
+        username= charfield ex: snoopdogg
+        full_name= charfield ex: Snoop Dogg
+        profile_picture= charfield ex: http://distillery.s3.amazonaws.com/profiles/profile_1574083_75sq_1295469061.jpg
+        bio= charfield ex: This is my bio
+        website= charfield ex: http=//snoopdogg.com
+       	media= intfield ex: 1320
+        follows= intfield ex: 420
+        followed_by= intfield ex: 341
+    Tumblr:
+	title = charfield ex: David's Log
+	posts = intfield ex: 3456
+	name = charfield ex: david
+	url = charfield ex: http://david.tumblr.com/
+	updated = datetime ex: 308953007
+	description = charfield ex: <p><strong>Mr. Karp</strong> is tall and skinny, with
+	likes = intfield: 12345
+
+	Renewing authtokens
+	We do not currently expire access tokens. Your access token will be invalid if a user explicitly rejects your application from their settings or if a Twitter admin suspends your application. If your application is suspended there will be a note on your application page saying that it has been suspended.

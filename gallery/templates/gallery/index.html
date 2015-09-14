@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<style type="text/css">
+			html, body{
+				margin: 0;
+				padding: 0;
+				height: 100%;
+				width: 100%;
+			}
+			#gallery{
+				height: 100%;
+			}
+		</style>
+		<link href="//sdk-sharerootinc.netdna-ssl.com/css/sdk.css" type="text/css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="gallery"></div>
+		<script type="text/javascript">
+			(function(url, conf) {
+				function getURLParameters() {
+					var search = window.location.search.replace(/\+/g, ' '), match = null, params = {};
+					var re = /(\?|&)(.+?)=(.*?)(?=&|$)/g;
+					while((match = re.exec(search)) !== null){
+						params[decodeURIComponent(match[2])] = decodeURIComponent(match[3]);
+					}
+					return params;
+				}
+
+				window._sharerootConfigHook = function(json){
+					params = getURLParameters();
+					console.log(json);
+					for(var prop in params) {
+						if(params.hasOwnProperty(prop)){
+							//check for an int
+							if (!isNaN(+params[prop]))
+								params[prop] = +params[prop];  
+							json[prop] = params[prop];
+						}
+					}
+					console.log(json);
+					return json;
+				}
+
+				var s = document.createElement('script'); 
+				s.src = url; 
+
+				s.onload = function() { 
+					window._shareroot.config(conf); 
+				};
+
+				(document.getElementsByTagName('head')[0] || document.body).appendChild(s);
+			})('//sdk-sharerootinc.netdna-ssl.com/js/sdk.js', {
+				upload: {
+					id: 1,
+					hash: 'upload'
+				},
+				gallery: {
+					id: '1',
+					hash: 'image',
+					element: '#gallery'
+				}
+			});
+
+
+		</script>
+	</body>
+</html>

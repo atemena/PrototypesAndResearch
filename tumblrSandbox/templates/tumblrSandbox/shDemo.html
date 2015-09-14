@@ -1,0 +1,119 @@
+<html>
+	<head>
+		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js"></script>
+		<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js"></script>
+		<script type="text/javascript" src="/static/js/oauth-1.0a.js"></script>
+
+	</head>
+	<body>
+		<button onclick="ImplicitLogin('instagram')"> Upload from Instagram </button>
+		<button onclick="ImplicitLogin('facebook')"> Upload from Facebook </button>
+		<button onclick="ImplicitLogin('dropbox')"> Upload from Dropbox </button>
+		<button onclick="ImplicitLogin('google')"> Upload from Google </button>
+		<button onclick="ImplicitLogin('box')"> Upload from Box </button>
+		<button onclick="ImplicitLogin('onedrive')"> Upload from OneDrive </button>
+		<input type="file" id="myFile" multiple size="50" onchange="myFunction()"/>
+		<p id="demo"></p><br/>
+		<!--<button onclick="uploadFromInstagram()"> Upload From Instagram</button>-->
+
+		<!-- Get ShareRoot pictures and uploaded pics from s3 -->
+
+
+		 <canvas id="myCanvas" width="800" height="800" style="border:1px solid #000000;"></canvas>
+	</body>
+	<script type="text/javascript">
+		function uploadFromInstagram(){
+			//request token
+			var popup = window.location.href = "http://127.0.0.1:8000/tumblrSandbox/getInstaPics";
+		}
+
+		var main_canvas=document.getElementById("myCanvas");
+		var main_context=main_canvas.getContext("2d");
+
+		var url = {
+			'facebook': "https://www.facebook.com/dialog/oauth?client_id=1471832879750979&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2FtumblrSandbox%2FshDemoRedirect%2F&response_type=token&scope=user_photos",
+			'instagram': "https://instagram.com/oauth/authorize/?client_id=3cc0c367787843d4a97d8c59cfc9b208&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2FtumblrSandbox%2FshDemoRedirect%2F&response_type=token",
+			'dropbox': "https://www.dropbox.com/1/oauth2/authorize/?client_id=0egqqday1ca7d5h&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2FtumblrSandbox%2FshDemoRedirect%2F&response_type=token",
+			'google':'https://accounts.google.com/o/oauth2/auth?client_id=319550887228-uhr5utc5b2tq7sf22t247uudtlikisht.apps.googleusercontent.com&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2FtumblrSandbox%2FshDemoRedirect%2F&response_type=token&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive',
+			'box':'https://app.box.com/api/oauth2/authorize?response_type=code&client_id=1bedipiioom038by68e1tmt8agpm3hb8&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2FtumblrSandbox%2FshDemoRedirect%2F&state=check',
+			'onedrive':'https://login.live.com/oauth20_authorize.srf?client_id=00000000401576BA&scope=wl.signin%20wl.basic%20wl.skydrive_update&response_type=token&redirect_uri=http%3A%2F%2F127.0.0.1%3A8000%2FtumblrSandbox%2FshDemoRedirect%2F'
+		}
+
+		function ImplicitLogin(network){
+			window.location.href = url[network];
+		}
+
+
+		function myFunction(){
+			var x = document.getElementById("myFile");
+			var txt = "";
+			if ('files' in x) {
+				if (x.files.length == 0) {
+					txt = "Select one or more files.";
+				} else {
+					for (var i = 0; i < x.files.length; i++) {
+						var file = x.files[i];
+						var img = document.createElement("img");
+						var reader = new FileReader();
+						reader.onload = function(e) {
+							img.src = e.target.result
+							console.log(img.src);
+							var canvas = main_canvas;
+							var ctx = canvas.getContext("2d");
+							ctx.drawImage(img, 0, 0);
+							var MAX_WIDTH = 800;
+							var MAX_HEIGHT = 600;
+							var width = img.width;
+							var height = img.height;
+							 
+							if (width > height) {
+							  if (width > MAX_WIDTH) {
+								height *= MAX_WIDTH / width;
+								width = MAX_WIDTH;
+							  }
+							} else {
+							  if (height > MAX_HEIGHT) {
+								width *= MAX_HEIGHT / height;
+								height = MAX_HEIGHT;
+							  }
+							}
+							canvas.width = width;
+							canvas.height = height;
+							var ctx = canvas.getContext("2d");
+							ctx.drawImage(img, 0, 0, width, height);
+						}
+						reader.readAsDataURL(file);
+
+						
+
+						//var dataurl = canvas.toDataURL("image/png");
+						//var file = canvas.mozGetAsFile("foo.png");
+
+
+						txt += "<br><strong>" + (i+1) + ". file</strong><br>";
+						if ('name' in file) {
+							txt += "name: " + file.name + "<br>";
+						}
+						if ('size' in file) {
+							txt += "size: " + file.size + " bytes <br>";
+						}
+						if ('type' in file) {
+							txt += "type: " + file.type + "  <br>";
+						}
+					}
+				}
+			} 
+			else {
+				if (x.value == "") {
+					txt += "Select one or more files.";
+				} else {
+					txt += "The files property is not supported by your browser!";
+					txt  += "<br>The path of the selected file: " + x.value; // If the browser does not support the files property, it will return the path of the selected file instead. 
+				}
+			}
+			document.getElementById("demo").innerHTML = txt;
+		}
+	</script>
+</html>

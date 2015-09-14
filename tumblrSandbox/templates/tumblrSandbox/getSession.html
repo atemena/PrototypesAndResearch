@@ -1,0 +1,15 @@
+<html>
+	<body>
+		Url: {{info.response.blog.url}}<br/>
+		Title: {{info.response.blog.title}}<br/>
+		Name: {{info.response.blog.name}}<br/>
+		Likes: {{info.response.blog.likes}}<br/>
+		Followers: {{followers.response.total_users}}<br/>
+		Total posts: {{info.response.blog.posts}}<br/>
+		<br/>
+		{%for post in posts%}
+		{{forloop.revcounter}}:  Reblogs:{{post.reblogs}}      		Likes:{{post.likes}}     	Id:{{post.id}}
+		<br/><br/>
+		{%endfor%}
+	</body>
+</html>

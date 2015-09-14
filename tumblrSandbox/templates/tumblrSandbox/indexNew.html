@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<script type="text/javascript" src="/static/js/pinterest.js"></script>
+		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.6.0.min.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Hanalei' rel='stylesheet' type='text/css'>
+		<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js"></script>
+		<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js"></script>
+		<script type="text/javascript" src="/static/js/oauth-1.0a.js"></script>
+		<!-- start Mixpanel --><script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+	for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+	mixpanel.init("369f4e6434fa136c727f34ca3ed4fb8a");</script><!-- end Mixpanel -->
+	</head>
+	<body>
+		<script type="text/javascript">
+		mixpanel.track("Event Name");
+		</script>
+		<input type="text" id="search"></input>
+		<button onclick="authenticate('tumblr')"> Post to Tumblr</button>
+		<button onclick="authenticate('twitter')"> Post to Twitter</button>
+		<button onclick="authenticate('instagram')"> Post to Instagram</button>
+		<button onclick="givePermission('in')"> Give permission</button>
+		<button onclick="snapshot()"> Get brand snapshot</button>
+		<form action="">
+			<input type="radio" name="media-type" value="images">Image 
+			<input type="radio" name="media-type" value="videos">Video 
+			<input type="radio" name="media-type" value="news">News 
+		</form>
+		<div style="font-family: 'Hanalei', cursive;"></div>
+	</body>
+	<script type="text/javascript">
+
+		function authenticate(network){
+			//request token
+			var popup = window.open("http://127.0.0.1:8000/tumblrSandbox/authenNew/?network="+network+"&mediatype="+$("input:radio[name=media-type]:checked").val()+"&search="+$("#search").val(),'','');
+		}
+		function givePermission(platform){
+			//request token
+			var popup = window.location.href= "http://127.0.0.1:8000/tumblrSandbox/givePermissionNew/?platform="+platform;
+		}
+
+		function snapshot(platform){
+			//request token
+			var popup = window.open("http://127.0.0.1:8000/tumblrSandbox/getSnapshotNew/?search="+$("#search").val()+"&mediatype="+$("input:radio[name=media-type]:checked").val(),'','');
+		}
+	</script>
+</html>

@@ -1,0 +1,59 @@
+<html>
+	<head>
+		<script type="text/javascript" src="/static/js/pinterest.js"></script>
+		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.6.0.min.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Hanalei' rel='stylesheet' type='text/css'>
+		<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js"></script>
+		<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js"></script>
+		<script type="text/javascript" src="/static/js/oauth-1.0a.js"></script>
+	</head>
+	<body>
+		{{code}}</br>{{session}}</br>
+		 <canvas id="myCanvas" width="800" height="800" style="border:1px solid #000000;"></canvas>
+		{%for photo in photos%}
+			{% if photo.url %}
+				<div class="grid__card card photos" cardId="{{photo.id}}"><img src="{{photo.url}}" class="card__image" onclick="myFunction('{{photo.url}}');">
+	        	</div>	
+	        {%endif%}
+		{%endfor%}
+	</body>
+	<script type="text/javascript">
+
+		var main_canvas=document.getElementById("myCanvas");
+		var main_context=main_canvas.getContext("2d");
+
+		function myFunction(url){
+			
+			var img = document.createElement("img");
+			img.src = url;
+			img.onload = function(){
+				var width = main_canvas.width;
+				var canvas = main_canvas;
+				var ctx = canvas.getContext("2d");
+				ctx.drawImage(img, 0, 0);
+				var MAX_WIDTH = 800;
+				var MAX_HEIGHT = 600;
+				var width = img.width;
+				var height = img.height;
+				 
+				if (width > height) {
+				  if (width > MAX_WIDTH) {
+					height *= MAX_WIDTH / width;
+					width = MAX_WIDTH;
+				  }
+				} else {
+				  if (height > MAX_HEIGHT) {
+					width *= MAX_HEIGHT / height;
+					height = MAX_HEIGHT;
+				  }
+				}
+				canvas.width = width;
+				canvas.height = height;
+				var ctx = canvas.getContext("2d");
+				ctx.drawImage(img, 0, 0, width, height);
+			}
+		}
+	</script>
+</html>

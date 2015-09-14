@@ -1,0 +1,151 @@
+<html>
+	<head>
+		<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js"></script>
+		<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js"></script>
+		<script type="text/javascript" src="/static/js/oauth-1.0a.js"></script>
+		<script type="text/javascript" src="/static/js/jquery-2.1.4.min.js"></script>
+		<script type="text/javascript" src="/static/js/underscore.js"></script>
+		<script type="text/javascript" src="/static/js/backbone-min.js"></script>
+		<script type="text/javascript" src="/static/js/filePickerModel.js"></script>
+	</head>
+	<body>
+		<div id="test"></div>
+		<div id="green"></div>
+	</body>
+	<script type="text/javascript">
+		var loginSpec = {};
+		var hash;
+		var coll;
+		var photo;
+		var view;
+		$(document).ready(function() {
+			hash = window.location.hash.split("&")[0].substring(1);
+			console.log(hash);
+			//var url = "https://api.instagram.com/v1/users/self/media/recent?" + hash ; //+ "&count=100";
+
+			//just uploaded photos
+			//var url = "https://graph.facebook.com/v2.3/me/photos?" + hash + "&type=uploaded";
+			
+			//albums
+			//var url = "https://graph.facebook.com/v2.3/me/albums?" + hash;
+
+			//dropbox
+			//var url = 
+		   	
+		   	//google drive
+		   	//{"web":{"auth_uri":"https://accounts.google.com/o/oauth2/auth"
+		   	//"client_secret":"VjFwfH3Mwkrbkc9VSTf3WSBv"
+		   	//"token_uri":"https://accounts.google.com/o/oauth2/token"
+		   	//"client_email":"319550887228-uhr5utc5b2tq7sf22t247uudtlikisht@developer.gserviceaccount.com"
+		   	//"redirect_uris":["http://127.0.0.1:8000/tumblrSandbox/shDemoRedirect/"]
+		   	//"client_x509_cert_url":"https://www.googleapis.com/robot/v1/metadata/x509/319550887228-uhr5utc5b2tq7sf22t247uudtlikisht@developer.gserviceaccount.com"
+		   	//"client_id":"319550887228-uhr5utc5b2tq7sf22t247uudtlikisht.apps.googleusercontent.com"
+		   	//"auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs"
+		   	//"javascript_origins":["http://127.0.0.1:8000"]}}
+		   	//var url = "https://www.googleapis.com/drive/v2/files?q=mimeType%20%3D%20%27application%2Fvnd.google-apps.photo%27&" + hash; 
+		   	//q=mimeType%20%3D%20%27application%2Fvnd.google-apps.photo%27&
+
+		   	//OneDrive
+		   	//var url = 'https://apis.live.net/v5.0/me/albums?access_token=' + hash;
+
+		 //   	$.ajax({
+		 //        type: "GET",
+		 //        url: url,
+		 //        dataType: "jsonp",
+			// 	beforeSend: function(jqXHR, settings){
+			// 		console.log("regular ajax     ", jqXHR);
+			// 		console.log(settings);
+			// 	}
+		 //    }).done(function(result) {
+		 //    	console.log(result);
+			// });
+			FaceBookSpec = {
+				'name': 'facebook',
+				'url': 'https://graph.facebook.com/v2.3/me/albums?',
+				'marshall': 'data',
+				'jsonp': false,
+				'parse': function(response, options){
+					var parsed = [];
+					var maps = {
+						'size':'height', //heightxresponsewidth
+						'name':'name',
+						'source':'images', //response.images[0].source
+						'created_time':'created_time',
+						'item_id':'id'
+					}
+					for (var i = 0; i < response.data.length; i++) {
+						var parsedObject = {};
+						_.each(maps, function(val, key){
+							parsedObject[key] = response.data[i][val];
+						});
+						parsedObject.access_token = window.location.hash.split("&")[0].substring(1);
+						parsed.push(parsedObject);
+					}
+					return parsed;
+				}
+			}
+
+			InstagramSpec = {
+				'name': 'facebook',
+				'url': 'https://graph.facebook.com/v2.3/me/albums?',
+				'marshall': 'data',
+				'jsonp': false,
+				'parse': function(response, options){
+					var parsed = [];
+					var maps = {
+						'size':'height', //heightxresponsewidth
+						'name':'name',
+						'source':'images', //response.images[0].source
+						'created_time':'created_time',
+						'item_id':'id'
+					}
+					for (var i = 0; i < response.data.length; i++) {
+						var parsedObject = {};
+						_.each(maps, function(val, key){
+							parsedObject[key] = response.data[i][val];
+						});
+						parsedObject.access_token = window.location.hash.split("&")[0].substring(1);
+						parsed.push(parsedObject);
+					}
+					return parsed;
+				}
+			}
+
+			coll = new FolderCollection();
+			coll.accessToken = window.location.hash.split("&")[0].substring(1);
+			reSpecCollection(FaceBookSpec);
+			coll.fetch({
+				beforeSend: function(jqXHR, settings){
+					// console.log(jqXHR);
+					// console.log(settings);
+					settings.url = settings.url + window.location.hash.split("&")[0].substring(1);
+					
+					// settings.dataType = 'jsonp';
+					// settings.cache = false;
+					// settings.xhrFields = {withCredentials: true};
+					// settings.processData = false;
+				}, 
+				success: function(collection, response, options){
+					console.log(response);
+					photo = collection.at(0);
+					view = new FolderCollectionView({el: $("#test"), model: coll});
+					view.render();
+					console.log(photo);
+				}
+			});
+
+			function reSpecCollection(spec){
+				coll.reset();
+				coll.url = spec.url;
+				coll.dataSync = false
+				coll.map = spec.marshall;
+				coll.parse = spec.parse;
+				
+			};
+
+
+            	//
+            	//http://127.0.0.1:8000/tumblrSandbox/shDemoRedirect/
+		});
+	</script>
+</html>

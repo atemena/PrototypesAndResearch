@@ -1,0 +1,119 @@
+<html>
+	<body>
+		{%for brand in brandInfo%}
+			<p>{{brand.name}}</br>
+			Website works: 
+			{% if brand.website_works %}
+				<b style="color: green">{{brand.website_works}}</b>
+			{% else %}
+				{{brand.website_works}}
+			{%endif%}
+			</br>
+			Using Olapic: 
+			{% if brand.olapic or brand.olapic2 %}
+				<b style="color: green">True</b>
+			{% else %}
+				{{brand.olapic}}
+			{%endif%}
+			</br>
+			Using Sociable: 
+			{% if brand.sociable %}
+				<b style="color: green">{{brand.sociable}}</b>
+			{% else %}
+				{{brand.sociable}}
+			{%endif%}
+			</br>
+			Using Postano: 
+			{% if brand.postano %}
+				<b style="color: green">{{brand.postano}}</b>
+			{% else %}
+				{{brand.postano}}
+			{%endif%}
+			</br>
+			Using Tint: 
+			{% if brand.tint %}
+				<b style="color: green">{{brand.tint}}</b>
+			{% else %}
+				{{brand.tint}}
+			{%endif%}
+			</br>
+			Using Pixlee: 
+			{% if brand.pixlee %}
+				<b style="color: green">{{brand.pixlee}}</b>
+			{% else %}
+				{{brand.pixlee}}
+			{%endif%}
+			</br>
+			Using Curalate: 
+			{% if brand.curalate %}
+				<b style="color: green">{{brand.curalate}}</b>
+			{% else %}
+				{{brand.curalate}}
+			{%endif%}
+			</br>
+			Using Chute: 
+			{% if brand.chute %}
+				<b style="color: green">{{brand.chute}}</b>
+			{% else %}
+				{{brand.chute}}
+			{%endif%}
+			</br>
+			Using Foursixty: 
+			{% if brand.foursixty %}
+				<b style="color: green">{{brand.foursixty}}</b>
+			{% else %}
+				{{brand.foursixty}}
+			{%endif%}
+			</br>
+			{% if brand.facebook %}
+				Facebook ID: 
+				<b>{{brand.facebook}}</b>
+				</br>
+			{%endif%}
+			{% if brand.twitter %}
+				Twitter ID: 
+				<b>{{brand.twitter}}</b>
+				</br>
+			{%endif%}
+			{% if brand.instagram %}
+				Instagram ID: 
+				<b>{{brand.instagram}}</b>
+				</br>
+			{%endif%}
+			{% if brand.pinterest %}
+				Pinterest ID: 
+				<b>{{brand.pinterest}}</b>
+				</br>
+			{%endif%}
+			{% if brand.linkedin %}
+				Linkedin ID: 
+				<b>{{brand.linkedin}}</b>
+				</br>
+			{%endif%}
+			{% if brand.tumblr %}
+				Tumblr ID: 
+				<b>{{brand.tumblr}}</b>
+				</br>
+			{%endif%}
+			{% if brand.youtube %}
+				Youtube ID: 
+				<b>{{brand.youtube}}</b>
+				</br>
+			{%endif%}
+			{% if brand.googleplus %}
+				Google Plus ID: 
+				<b>{{brand.googleplus}}</b>
+				</br>
+			{%endif%}
+			{% if brand.flickr %}
+				Flickr ID: 
+				<b>{{brand.flickr}}</b>
+				</br>
+			{%endif%}
+		</p>
+		{%endfor%} 
+	</body>
+
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+</html>

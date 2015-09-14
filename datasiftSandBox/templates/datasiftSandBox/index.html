@@ -1,0 +1,65 @@
+<html>
+	<body>
+		<div>
+			Create new stream: </br>
+			One word query <input id='query'></input>
+			<button id='createNewStream'>Submit</button>
+		</div>
+		<div>
+			Current Streams <button> Refresh </button><br>
+			<div id='streams-hldr'>
+			{% for stream in streams %}
+				 Id:{{ stream.id }}	<input type='button' class='stopStream' onclick='stopStream("{{stream.id}}")' value='Stop'/> <br>
+			{% endfor %}
+			</div>
+		</div>
+	</body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function () {
+
+		$('#createNewStream').click(function(){
+			console.log('in the first');
+			$.ajax({
+				type: 'POST',
+				url: "createStream",
+				data:{
+					'brandId': '2',
+					'query': $('#query').val()
+				},
+				success: function(result){
+        			console.log(result);
+        			refreshList(result);
+    			}
+    		});
+		});
+
+		stopStream = function(result){
+			var dataId = result;
+			console.log(dataId);
+			$.ajax({
+				type: 'POST',
+				url: 'stopStream',
+				data:{
+					'stream': 'true',
+					'streamId': dataId
+				},
+				success: function(result){
+					console.log(result);
+					refreshList(result);
+				}
+			});
+		}
+
+		var refreshList = function(result){
+			$('#streams-hldr').html('');
+			for(var i=0;i<result.streams.subscriptions.length;i++){
+				$('#streams-hldr').append("Id:" + result.streams.subscriptions[i].id );
+				$('#streams-hldr').append("<input type='button' class='stopStream' onclick='stopStream(" +result.streams.subscriptions[i].id+ ")' value='Stop'/><br>")
+			}
+		}
+
+
+	})
+	</script>
+</html>

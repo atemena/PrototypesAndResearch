@@ -1,0 +1,26 @@
+<html>
+	<body>
+		asdfasdfs = {{access_token}}
+		{%for tweet in tweets%}
+			<p>{{tweet.text}}</br>
+			<img width="150px" src={{tweet.url}}></img> </p>
+		{%endfor%} 
+	</body>
+
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<script>
+	function myFunction(){
+		$.ajax({
+		    type: 'GET',
+		    url: 'https://api.twitter.com/1.1/statuses/user_timeline.json?count=2&screen_name=macdrewzy',
+		    headers: {
+		    	Authorization: 'OAuth oauth_consumer_key="H7oEtDyZMPEMxX0RuElUfGNKE", oauth_nonce="kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4fr", oauth_signature="0MXMvPD%2B0BaMx9Is8oyDsw0Maqw%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1318622958", oauth_token="{{access_token}}", oauth_version="1.0"'
+		    }
+		}).done(function(data) { 
+		    alert(data);
+		});
+	}
+	</script>
+</html>
+  
