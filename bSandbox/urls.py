@@ -14,7 +14,8 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^', include('hootsuite.urls')),
+    url(r'^', include('instamap.urls')),
+    url(r'^instamap/', include('instamap.urls')),
     url(r'^balancedSandbox/', include('balancedSandbox.urls')),
     url(r'^backboneSandbox/', include('backboneSandbox.urls')),
     url(r'^tumblrSandbox/', include('tumblrSandbox.urls')),

@@ -43,95 +43,47 @@
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
-			// var filename = "filetest-empty-meta.text"
-			// var blob = new Blob();
-			// var settings = [];
-			// var dat = new FormData();
-			// dat.append('key', filename);
-			// dat.append('AWSAccessKeyId', 'AKIAJ652FKRGRGEJPUPA');
-			// dat.append('acl', 'private');
-			// dat.append('Content-Type', 'application/json');
-			// dat.append('x-amz-meta-test', '');
-			// dat.append('policy', 'eyJjb25kaXRpb25zIjogW3siYnVja2V0IjogInN0YWdpbmcuc2hhcmVyb290LmNvIn0sIFsic3RhcnRzLXdpdGgiLCAiJGtleSIsICIiXSwgeyJhY2wiOiAicHJpdmF0ZSJ9LCBbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiYXBwbGljYXRpb24vanNvbiJdLCBbImNvbnRlbnQtbGVuZ3RoLXJhbmdlIiwgMCwgNDA5Nl0sIFsic3RhcnRzLXdpdGgiLCAiJHgtYW16LW1ldGEtdGVzdCIsICIiXV0sICJleHBpcmF0aW9uIjogIjIwMzAtMDEtMDFUMDA6MDA6MDBaIn0=');
-			// dat.append('signature', '+8fPcUvHf8BUoi5GJw3wpZ3fg6Y=');
-			// dat.append('file', blob);
-			//  $.ajax($.extend({
-			// 	type: 'POST',
-			// 	url: 'https://s3.amazonaws.com/staging.shareroot.co/',
-			// 	data: dat,
-			// 	cache: false,
-			// 	contentType: false,
-			// 	processData: false,
-			// 	// beforeSend: function (xhr) {
-			// 	// 	xhr.setRequestHeader ("x-amz-meta-test", "test!!!!");
-			// 	// }
-			// 	}, settings)).done(function(response, data){
-			// 		stripeResponseHandlerAjax(response,data);
-			// 	}).error(function(response, data){
-			// 		stripeResponseHandlerAjax(response,data);
-			// 	});
+
+			$('#payment-form').click(function(event) {
+				var $form = $(this);
+
+				// Disable the submit button to prevent repeated clicks
+				$form.find('button').prop('disabled', true);
+
+				Stripe.card.createToken($form, stripeResponseHandler);
+
+				//pk_test_1iEfE6GJuZKKTUwffGHHQzRQ
+				var card = {
+					'number': $('input[data-stripe="number"]').val(),
+					'exp-month': $('input[data-stripe="exp-month"]').val(),
+					'exp-year': $('input[data-stripe="exp-year"]').val(),
+					'cvc': $('input[data-stripe="cvc"]').val()
+				}
+				var payload = {
+					'card' : card
+				};
+
+				ajax call here for stripe
+				$.ajax({
+					type: "POST",
+					url: "https://api.stripe.com/v1/tokens",
+					data: payload,
+					cache: false,
+					contentType: "application/json",
+					processData: false,
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader ("Authorization", "Basic pk_test_1iEfE6GJuZKKTUwffGHHQzRQ");
+					}
+				}).done(function(response, data){
+					stripeResponseHandlerAjax(response,data);
+				}).error(function(response, data){
+					stripeResponseHandlerAjax(response,data);
+				});
 
 
-
-			// $('#payment-form').click(function(event) {
-			// 	var $form = $(this);
-
-				// // Disable the submit button to prevent repeated clicks
-				// $form.find('button').prop('disabled', true);
-
-				// Stripe.card.createToken($form, stripeResponseHandler);
-
-				// //pk_test_1iEfE6GJuZKKTUwffGHHQzRQ
-				// var card = {
-				// 	'number': $('input[data-stripe="number"]').val(),
-				// 	'exp-month': $('input[data-stripe="exp-month"]').val(),
-				// 	'exp-year': $('input[data-stripe="exp-year"]').val(),
-				// 	'cvc': $('input[data-stripe="cvc"]').val()
-				// }
-				// var payload = {
-				// 	'card' : card
-				// };
-
-				//ajax call here for stripe
-				// $.ajax({
-				// 	type: "POST",
-				// 	url: "https://api.stripe.com/v1/tokens",
-				// 	data: payload,
-				// 	cache: false,
-				// 	contentType: "application/json",
-				// 	processData: false,
-					// beforeSend: function (xhr) {
-					// 	xhr.setRequestHeader ("Authorization", "Basic pk_test_1iEfE6GJuZKKTUwffGHHQzRQ");
-					// }
-				// }).done(function(response, data){
-				// 	stripeResponseHandlerAjax(response,data);
-				// }).error(function(response, data){
-				// 	stripeResponseHandlerAjax(response,data);
-				// });
-
-			// 	var filename = "file.txt"
-			// 	var blob = new Blob(["this is my blob content"]);
-			// 	var settings = [];
-			// 	var dat = new FormData();
-			// 	dat.append('key', filename);
-			// 	dat.append('AWSAccessKeyId', 'AKIAJ652FKRGRGEJPUPA');
-			// 	dat.append('acl', 'private');
-			// 	dat.append('Content-Type', 'image/');
-			// 	dat.append('policy', 'eyJjb25kaXRpb25zIjogW3siYnVja2V0IjogInN0YWdpbmcuc2hhcmVyb290LmNvIn0sIFsic3RhcnRzLXdpdGgiLCAiJGtleSIsICIiXSwgeyJhY2wiOiAicHJpdmF0ZSJ9LCBbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiaW1hZ2UvIl0sIFsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXV0sICJleHBpcmF0aW9uIjogIjIwMzAtMDEtMDFUMDA6MDA6MDBaIn0=');
-			// 	dat.append('signature', 'PO2lw2FNCZ7LdMYmnyjMS4JRIe8=');
-			// 	dat.append('file', blob);
-			// 	$.ajax($.extend({
-			// 		type: 'POST',
-			// 		url: 'https://s3.amazonaws.com/staging.shareroot.co/',
-			// 		data: dat,
-			// 		cache: false,
-			// 		contentType: false,
-			// 		processData: false
-			// 	}, settings));
-
-			// 	// Prevent the form from submitting with the default action
-			// 	return false;
-			// });
+				// Prevent the form from submitting with the default action
+				return false;
+			});
 
 
 			var stripeResponseHandler = function(response, data){

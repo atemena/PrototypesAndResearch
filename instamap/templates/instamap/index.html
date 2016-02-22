@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Hootsuite Demo App</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
+        <script src="https://d2l6uygi1pgnys.cloudfront.net/jsapi/2-0/hsp.js"></script>
+
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+        <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+        <script src="/static/js/Leaflet.Instagram-gh-pages/dist/Leaflet.Instagram.js"></script>
+        <link rel="stylesheet" href="/static/js/Leaflet.Instagram-gh-pages/dist/Leaflet.Instagram.css"></link>
+        <script src="/static/js/reqwest-master/src/reqwest.js"></script>
+        <style>
+          .btn {
+            border-radius: 3px;
+            padding: 5px 15px;
+            font-size: 14px;
+            text-decoration: none;
+            margin: 10px;
+            color: #fff;
+            position: relative;
+            display: inline-block;
+            background-color: #2ecc71;
+          }
+          .btn.hover{
+            background-color: #48E68B;
+          }
+          .btn:active {
+            transform: translate(0px, 2px);
+            -webkit-transform: translate(0px, 2px);
+            box-shadow: 0px 1px 0px 0px;
+          }
+          #contain{
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+          }
+
+        </style>
+    </head>
+
+    <body>
+      <div id="map" style="height:800px"></div>
+      <div id="contain"><input type="text" id="username"></input><button id="search" class="btn">Map user's photos</button></div>
+      <script>
+      $( document ).ready(function() {
+        var layers;
+        var map = L.map('map').setView([37.8597, -122.29188], 13);
+        L.tileLayer('http://otile4.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg', {
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
+          maxZoom: 18
+        }).addTo(map);
+
+
+        $("#search").click(function(){
+          $.get( '/instamap/getUserId/?username=' + $('#username').val()).done(function( data ) {
+              if(layers){
+                layers.clearLayers();
+              }
+              layers = L.instagram('https://api.instagram.com/v1/users/' + data.userId + '/media/recent/?access_token=30986360.3cc0c36.9274076b88994cc882135cd2fe644c2d').addTo(map);
+              console.log('done');
+            }
+          );
+        });
+
+      });
+
+      
+      </script>
+    </body>
+</html>

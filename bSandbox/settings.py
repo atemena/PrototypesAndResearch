@@ -122,7 +122,8 @@ TEMPLATE_DIRS = (
     '/Users/MacDrew/Documents/bSandbox/datasiftSandBox/templates',
     '/Users/MacDrew/Documents/bSandbox/gallery/templates',
     '/Users/MacDrew/Documents/bSandbox/fbCanvas/templates',
-    '/Users/MacDrew/Documents/bSandbox/hootsuite/templates'
+    '/Users/MacDrew/Documents/bSandbox/hootsuite/templates',
+    '/Users/MacDrew/Documents/bSandbox/instamap/templates'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

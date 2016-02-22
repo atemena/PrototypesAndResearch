@@ -279,7 +279,6 @@ def getSessionTumblr(request):
 		#
 	options = {'type': 'photo', 'source': 'http://img2.wikia.nocookie.net/__cb20120427202836/gameofthrones/images/7/78/House_Stark_sigil.jpg'}
 	post = request.session['tumblr_session'].post('http://api.tumblr.com/v2/blog/'+blog_name+'/post', data=options)
-	import pdb; pdb.set_trace();
 	options = {'base-hostname': blog_name+'.tumblr.com'}
 	followers = request.session['tumblr_session'].get('http://api.tumblr.com/v2/blog/'+blog_name+'.tumblr.com/followers', data=options)
 	post_options = {'base-hostname': blog_name+'.tumblr.com', 'reblog_info': 'true', 'notes_info': 'true'}
@@ -372,7 +371,6 @@ def getSessionTwitterNew(request):
 			tweets.append({'text': tweet['text'], 'url': media_url, 'id_str': tweet['user']['id_str'], 'screen_name': tweet['user']['screen_name']  }) #hashtags retweet_count id
 		elif request.session['twitter_mediatype'] == 'news':
 			tweets.append({'text': tweet['text']})
-	import pdb; pdb.set_trace();
 	context = {'tweets': tweets, 'access_token': request.session['twitter_session'].access_token}
 	return render(request, 'tumblrSandbox/getSessionTwitter.html', context)
 
@@ -406,11 +404,18 @@ def getSessionInstagram(request):
 	session = instagram.get_auth_session(data=data, decoder=json.loads)
 	request.session['code'] = request.GET['code']
 	request.session['instagram_session'] = session
-	tags = session.get('https://api.instagram.com/v1/tags/search', params={'format': 'json','q':request.session['instagram_search'], 'access_token':session.access_token})
 	
+	#tags = session.get('https://api.instagram.com/v1/tags/search', params={'format': 'json','q':request.session['instagram_search'], 'access_token':session.access_token})
+	#''''' for likes vvvvvvv''''''
+	#tags = session.get('https://api.instagram.com/v1/users/self/media/liked', params={'max_like_id': 1150014038812429291, 'access_token':session.access_token})
+	#''''''''' for users vvvvv'''''''
+	print session.access_token
+	tags = session.get('https://api.instagram.com/v1/users/' + request.session['instagram_search'] + '/media/recent', params={'format': 'json', 'access_token':session.access_token})
+	#tags = session.get('https://api.instagram.com/v1/media/' + request.session['instagram_search'], params={'format': 'json', 'access_token':session.access_token})
+	print tags
 	tags = tags.json()
 	tag_info = []
-	import pdb; pdb.set_trace();
+	print tags['data']
 	for tag in tags['data']:
 		tag_info.append({'media_count': tag['media_count'], 'name': tag['name'], 'url': 'https://api.instagram.com/v1/tags/'+tag['name']+'/media/recent?client_id=3cc0c367787843d4a97d8c59cfc9b208'})
 	context = {'tag_info': tag_info}
